@@ -1,3 +1,4 @@
 <pages>
-	<page model="Test.php" view="Test.xhtml" controller="TestController.php" />
+	<page name="test" model="Test.php" view="Test.xhtml" controller="TestController.php" />
+	<page name="test2" model="Test2.php" view="Test2.xhtml" controller="Test2Controller.php" />
 </pages>
