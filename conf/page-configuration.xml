@@ -1,0 +1,3 @@
+<pages>
+	<page model="Test.php" view="Test.xhtml" controller="TestController.php" />
+</pages>
