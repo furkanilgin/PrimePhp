@@ -20,6 +20,6 @@ class XmlToHtmlConverter{
 			}
 		}
 		
-		echo $xhtml; // fount xml file
+		echo $xhtml; // found xml file
 	}
 }
