@@ -29,14 +29,17 @@ class XmlToHtmlConverter{
 		$xmlStr = file_get_contents("./view/".$xhtmlFileName);
 		$root = simplexml_load_string($xmlStr);
 		
-		$tagClassMapping = array(
-			"dropdown" => "Dropdown"
-		);
-		
-		foreach($root as $pageNode){
-			$componentArray[] = new $tagClassMapping[$pageNode->getName()];
+		$html = '';
+		foreach($root as $pageNode){ 
+			if($pageNode->getName() == "dropdown"){
+				$component = new Dropdown();
+				$component->name = $pageNode["name"];
+				$component->property = $pageNode["property"];
+			}
+			$componentArray[] = $component;
+			$html .= $component->getHtml();
 		}
 		
-		print_r($componentArray);
+		return $html;
 	}
 }
