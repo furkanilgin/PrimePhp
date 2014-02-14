@@ -1,9 +1,10 @@
 <?php
+include "/libs/header.php";
+include "./libs/XmlConverter.php";
 
-include "./libs/XmlToHtmlConverter.php";
+$componentArray = XmlConverter::convertToComponentArray($_GET["page"]);
+echo XmlConverter::convertToHtml($componentArray);
+file_put_contents("./libs/script.js", XmlConverter::convertToJS($componentArray));
 
-echo XmlToHtmlConverter::convert($_GET["page"]);
-
-//include "view/".$_GET["page"].".php";
-
+include "/libs/footer.php";
 ?>

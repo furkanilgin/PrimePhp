@@ -2,12 +2,10 @@
 
 require_once("./libs/components/Dropdown.php");
 
-class XmlToHtmlConverter{
-
-	private $xhtml;
-
-	public static function convert($page){
-		
+class XmlConverter{
+	
+	public static function convertToComponentArray($page){
+	
 		/** Find xml file path */
 		
 		$confStr = file_get_contents("./conf/page-configuration.xml");
@@ -30,7 +28,7 @@ class XmlToHtmlConverter{
 		$xmlStr = file_get_contents("./view/".$viewFileName);
 		$root = simplexml_load_string($xmlStr);
 		
-		foreach($root as $pageNode){ 
+		foreach($root as $pageNode){
 			if($pageNode->getName() == "dropdown"){
 				$component = new Dropdown();
 				$component->id = $pageNode["id"];
@@ -55,14 +53,32 @@ class XmlToHtmlConverter{
 			eval($assignment);
 			$component->property = $actualValue;
 		}
-
+		
+		return $componentArray;
+	}
+	
+	public static function convertToHtml($componentArray){
 		
 		/** Convert to html */
 		$html = '';
 		foreach($componentArray as $component){ 
 			$html .= $component->getHtml();
 		}
-		
+
 		return $html;
+	}
+	
+	public static function convertToJS($componentArray){
+	
+		$jsHeader = file_get_contents('./libs/scriptHeader.js');
+		$jsFooter = file_get_contents('./libs/scriptFooter.js');
+		
+		foreach($componentArray as $component){
+			if(get_class($component) == "Dropdown"){
+				$jsContent .= "$('#".$component->id."').puidropdown();";
+			}
+		}
+		
+		return $jsHeader.$jsContent.$jsFooter;
 	}
 }
