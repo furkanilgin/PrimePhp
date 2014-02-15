@@ -1,0 +1,2 @@
+# Redirect old file path to new file path
+DirectoryIndex ./libs/PrimePhp/index.php

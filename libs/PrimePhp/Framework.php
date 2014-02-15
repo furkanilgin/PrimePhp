@@ -22,6 +22,14 @@ class Framework{
 		return $requestedPageConfiguration;
 	}
 	
+	public function checkRequestedPageIsCorrect($requestedPageConfiguration){
+		
+		if(!isset($requestedPageConfiguration)){
+			require_once("./html/404.html");
+			exit;
+		}
+	}
+	
 	public function convertXmlToComponentArray($requestedPageConfiguration){
 		
 		$xmlStr = file_get_contents("../../view/".$requestedPageConfiguration["view"]);
