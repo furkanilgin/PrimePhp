@@ -14,5 +14,6 @@
 		<option value="2">Option 2</option>  
 		<option value="3">Option 3</option>  
 	</select>
-	
+	<button id="default" type="button">Default</button> 
 	<script type="text/javascript" src="./libs/script.js"></script>
+

@@ -2,6 +2,6 @@
 
 class Test{
 
-	public $city;
-	public $state;
+	public $city_Dropdown;
+	public $state_Dropdown;
 }

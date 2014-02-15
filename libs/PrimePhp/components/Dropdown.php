@@ -22,7 +22,7 @@ class Dropdown{
 			}
 		}
 		else{
-			throw new Exception("Property must be array");
+			throw new Exception("Dropdown items must be array");
 		}
 		$html.= '</select>';
 		

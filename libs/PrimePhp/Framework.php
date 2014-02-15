@@ -1,5 +1,6 @@
 <?php
 require_once("./components/Dropdown.php");
+require_once("./components/Button.php");
 
 class Framework{
 
@@ -43,6 +44,14 @@ class Framework{
 				$component->property = $pageNode["property"];
 				$component->change = $pageNode["change"];
 				$component->selectedItem = $_POST[(string)$component->id];
+			}
+			if($pageNode->getName() == "button"){
+				$component = new Button();
+				$component->id = $pageNode["id"];
+				$component->name = $pageNode["name"];
+				$component->text = $pageNode["text"];
+				$component->property = $pageNode["property"];
+				$component->action = $pageNode["action"];
 			}
 			$componentArray[] = $component;
 		}
@@ -116,9 +125,7 @@ class Framework{
 		$jsFooter = file_get_contents('./js/scriptFooter.js');
 		
 		foreach($componentArray as $component){
-			if(get_class($component) == "Dropdown"){
-				$jsContent .= $component->getJS();
-			}
+			$jsContent .= $component->getJS();
 		}
 		
 		return $jsHeader.$jsContent.$jsFooter;
