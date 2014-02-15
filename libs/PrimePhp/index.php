@@ -1,6 +1,6 @@
 <?php
-include "/html/header.html";
-include "./Framework.php";
+require_once("/html/header.html");
+require_once("./Framework.php");
 
 $framework = new Framework();
 $requestedPageConfiguration = $framework->findRequestedPageConfiguration($_GET["page"]);
@@ -13,5 +13,5 @@ $js = $framework->renderJS($componentArray);
 echo $html;
 file_put_contents("./js/script.js", $js);
 
-include "/html/footer.html";
+require_once("/html/footer.html");
 ?>

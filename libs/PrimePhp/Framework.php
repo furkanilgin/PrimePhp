@@ -42,6 +42,7 @@ class Framework{
 	
 	public function createControllerObject($requestedPageConfiguration){
 
+		require_once("../../model/".$requestedPageConfiguration["model"]); // import model
 		require_once("../../controller/".$requestedPageConfiguration["controller"]);
 		$controllerClassName = str_replace(".php", "", $requestedPageConfiguration["controller"]);
 		$controller = new $controllerClassName;
