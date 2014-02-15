@@ -41,36 +41,64 @@ class Framework{
 				$component->id = $pageNode["id"];
 				$component->name = $pageNode["name"];
 				$component->property = $pageNode["property"];
+				$component->change = $pageNode["change"];
+				$component->selectedItem = $_POST[(string)$component->id];
 			}
 			$componentArray[] = $component;
 		}
-		
+
 		return $componentArray;
 	}
 	
-	public function createControllerObject($requestedPageConfiguration){
+	public function createControllerAndModelObject($requestedPageConfiguration){
 
 		require_once("../../model/".$requestedPageConfiguration["model"]); // import model
 		require_once("../../controller/".$requestedPageConfiguration["controller"]);
 		$controllerClassName = str_replace(".php", "", $requestedPageConfiguration["controller"]);
+		$modelClassName = str_replace(".php", "", $requestedPageConfiguration["model"]);
 		$controller = new $controllerClassName;
+		$controller->{strtolower($modelClassName)} = new $modelClassName;
 		
 		return $controller; 
 	}
 	
-	public function setPropertyValuesFromModelToComponentArray($componentArray, $controller){
+	public function setFromComponentArrayToModel($componentArray, $controller){
 	
-		foreach($componentArray as $component){ 
+		foreach($componentArray as $component){
 			$tmp_val = str_replace("#{", "", $component->property);
-			$tmp_val = str_replace("}", "", $tmp_val, $component->property);
-			$assignment = '$actualValue = $controller->'.$tmp_val.';';
-			eval($assignment);
-			$component->property = $actualValue;
+			$property = str_replace("}", "", $tmp_val);
+			$assignmentStatement = '$controller->'.$property.' = $component;';
+			eval($assignmentStatement);
+		}
+
+		return $controller;
+	}
+	
+	public function callLoadFunction($controller){
+		$controller->load($controller);
+	}
+	
+	public function setFromModelToComponentArray($componentArray, $controller){
+	
+		foreach($componentArray as $component){
+			$tmp_val = str_replace("#{", "", $component->property);
+			$property = str_replace("}", "", $tmp_val);
+			$assignmentStatement = '$component = $controller->'.$property.';';
+			eval($assignmentStatement);
 		}
 		
 		return $componentArray;
 	}
 	
+	public function callAction($controller){
+	
+		if(!empty($_POST)){
+			$method = $_POST["action"];
+			$callStatement = '$controller->'.$method;
+			eval($callStatement);
+		}
+	}
+
 	public function renderHtml($componentArray){
 		
 		/** Convert to html */
@@ -89,7 +117,7 @@ class Framework{
 		
 		foreach($componentArray as $component){
 			if(get_class($component) == "Dropdown"){
-				$jsContent .= "$('#".$component->id."').puidropdown();";
+				$jsContent .= $component->getJS();
 			}
 		}
 		

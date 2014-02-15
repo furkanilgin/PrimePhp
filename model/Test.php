@@ -2,6 +2,6 @@
 
 class Test{
 
-	public $cities;
-	public $states;
+	public $city;
+	public $state;
 }

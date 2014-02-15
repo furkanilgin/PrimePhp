@@ -6,8 +6,11 @@ $framework = new Framework();
 $requestedPageConfiguration = $framework->findRequestedPageConfiguration($_GET["page"]);
 $framework->checkRequestedPageIsCorrect($requestedPageConfiguration);
 $componentArray = $framework->convertXmlToComponentArray($requestedPageConfiguration);
-$controller = $framework->createControllerObject($requestedPageConfiguration);
-$componentArray = $framework->setPropertyValuesFromModelToComponentArray($componentArray, $controller);
+$controller = $framework->createControllerAndModelObject($requestedPageConfiguration);
+$controller = $framework->setFromComponentArrayToModel($componentArray, $controller);
+$framework->callLoadFunction($controller);
+$componentArray = $framework->setFromModelToComponentArray($componentArray, $controller);
+$framework->callAction($controller);
 $html = $framework->renderHtml($componentArray);
 $js = $framework->renderJS($componentArray);
 

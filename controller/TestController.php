@@ -4,11 +4,19 @@ class TestController{
 
 	public $test;
 
-	public function __construct(){
+	public function load(){
 	
-		$this->test = new Test();
-		$this->test->cities = array("1" => "city1", "2" => "city2", "3" => "city3");
-		$this->test->states = array("1" => "state1", "2" => "state2", "3" => "state3");
+		$this->test->city->items = array("1" => "city1", "2" => "city2", "3" => "city3");
+		$this->test->state->items = array("1" => "state1", "2" => "state2", "3" => "state3");
 	}
-
+	
+	public function basicChangeEvent(){
+	
+		echo "basicChangeEvent works";
+	}
+	
+	public function basic2ChangeEvent(){
+	
+		echo "basic2ChangeEvent works";
+	}
 }
