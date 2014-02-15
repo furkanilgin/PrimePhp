@@ -8,6 +8,7 @@ class TestController{
 
 		$this->test->city_Dropdown->items = array("1" => "city1", "2" => "city2", "3" => "city3");
 		$this->test->state_Dropdown->items = array("1" => "state1", "2" => "state2", "3" => "state3");
+		//$this->test->save_Button->text = "Kaydet";
 	}
 	
 	public function basicChangeEvent(){
