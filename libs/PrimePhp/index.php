@@ -1,6 +1,6 @@
 <?php
-include "/libs/header.php";
-include "./libs/Framework.php";
+include "/html/header.html";
+include "./Framework.php";
 
 $framework = new Framework();
 $requestedPageConfiguration = $framework->findRequestedPageConfiguration($_GET["page"]);
@@ -11,7 +11,7 @@ $html = $framework->renderHtml($componentArray);
 $js = $framework->renderJS($componentArray);
 
 echo $html;
-file_put_contents("./libs/script.js", $js);
+file_put_contents("./js/script.js", $js);
 
-include "/libs/footer.php";
+include "/html/footer.html";
 ?>

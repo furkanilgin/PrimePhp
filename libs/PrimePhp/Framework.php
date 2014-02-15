@@ -1,12 +1,11 @@
 <?php
-
-require_once("./libs/components/Dropdown.php");
+require_once("./components/Dropdown.php");
 
 class Framework{
 
 	public function findRequestedPageConfiguration($page){
 	
-		$confStr = file_get_contents("./conf/page-configuration.xml");
+		$confStr = file_get_contents("../../conf/page-configuration.xml");
 		$root = simplexml_load_string($confStr);
 
 		$pageDefinitionCount = 0;
@@ -25,7 +24,7 @@ class Framework{
 	
 	public function convertXmlToComponentArray($requestedPageConfiguration){
 		
-		$xmlStr = file_get_contents("./view/".$requestedPageConfiguration["view"]);
+		$xmlStr = file_get_contents("../../view/".$requestedPageConfiguration["view"]);
 		$root = simplexml_load_string($xmlStr);
 		
 		foreach($root as $pageNode){
@@ -43,7 +42,7 @@ class Framework{
 	
 	public function createControllerObject($requestedPageConfiguration){
 
-		require_once("./controller/".$requestedPageConfiguration["controller"]);
+		require_once("../../controller/".$requestedPageConfiguration["controller"]);
 		$controllerClassName = str_replace(".php", "", $requestedPageConfiguration["controller"]);
 		$controller = new $controllerClassName;
 		
@@ -76,8 +75,8 @@ class Framework{
 	
 	public function renderJS($componentArray){
 	
-		$jsHeader = file_get_contents('./libs/scriptHeader.js');
-		$jsFooter = file_get_contents('./libs/scriptFooter.js');
+		$jsHeader = file_get_contents('./js/scriptHeader.js');
+		$jsFooter = file_get_contents('./js/scriptFooter.js');
 		
 		foreach($componentArray as $component){
 			if(get_class($component) == "Dropdown"){
