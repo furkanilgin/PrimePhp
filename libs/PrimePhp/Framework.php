@@ -1,4 +1,5 @@
 <?php
+require_once("./components/Inputtext.php");
 require_once("./components/Dropdown.php");
 require_once("./components/Button.php");
 
@@ -37,6 +38,14 @@ class Framework{
 		$root = simplexml_load_string($xmlStr);
 		
 		foreach($root as $pageNode){
+			if($pageNode->getName() == "inputtext"){
+				$component = new Inputtext();
+				$component->id = $pageNode["id"];
+				$component->name = $pageNode["name"];
+				$component->text = $pageNode["text"];
+				$component->property = $pageNode["property"];
+				$component->text = $_POST[(string)$component->id];
+			}
 			if($pageNode->getName() == "dropdown"){
 				$component = new Dropdown();
 				$component->id = $pageNode["id"];
