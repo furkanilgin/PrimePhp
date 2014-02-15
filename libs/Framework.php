@@ -2,12 +2,10 @@
 
 require_once("./libs/components/Dropdown.php");
 
-class XmlConverter{
+class Framework{
+
+	public function findRequestedPageConfiguration($page){
 	
-	public static function convertToComponentArray($page){
-	
-		/** Find xml file path */
-		
 		$confStr = file_get_contents("./conf/page-configuration.xml");
 		$root = simplexml_load_string($confStr);
 
@@ -17,15 +15,17 @@ class XmlConverter{
 				if($pageDefinitionCount > 0){
 					throw new Exception('There must be only one page definition with same name in page-configuration.xml');
 				}
-				$viewFileName = $pageNode["view"];
-				$controllerFileName = $pageNode["controller"];
+				$requestedPageConfiguration = $pageNode;
 				$pageDefinitionCount++;
 			}
 		}
 		
-		/** Find xml tags and assign them to html components */
+		return $requestedPageConfiguration;
+	}
+	
+	public function convertXmlToComponentArray($requestedPageConfiguration){
 		
-		$xmlStr = file_get_contents("./view/".$viewFileName);
+		$xmlStr = file_get_contents("./view/".$requestedPageConfiguration["view"]);
 		$root = simplexml_load_string($xmlStr);
 		
 		foreach($root as $pageNode){
@@ -38,14 +38,20 @@ class XmlConverter{
 			$componentArray[] = $component;
 		}
 		
-		/** Call controller's constructor */
+		return $componentArray;
+	}
+	
+	public function createControllerObject($requestedPageConfiguration){
 
-		require_once("./controller/".$controllerFileName);
-		$controllerClassName = str_replace(".php", "", $controllerFileName);
+		require_once("./controller/".$requestedPageConfiguration["controller"]);
+		$controllerClassName = str_replace(".php", "", $requestedPageConfiguration["controller"]);
 		$controller = new $controllerClassName;
 		
-		/** Set values from model to html components */
-		
+		return $controller; 
+	}
+	
+	public function setPropertyValuesFromModelToComponentArray($componentArray, $controller){
+	
 		foreach($componentArray as $component){ 
 			$tmp_val = str_replace("#{", "", $component->property);
 			$tmp_val = str_replace("}", "", $tmp_val, $component->property);
@@ -57,7 +63,7 @@ class XmlConverter{
 		return $componentArray;
 	}
 	
-	public static function convertToHtml($componentArray){
+	public function renderHtml($componentArray){
 		
 		/** Convert to html */
 		$html = '';
@@ -68,7 +74,7 @@ class XmlConverter{
 		return $html;
 	}
 	
-	public static function convertToJS($componentArray){
+	public function renderJS($componentArray){
 	
 		$jsHeader = file_get_contents('./libs/scriptHeader.js');
 		$jsFooter = file_get_contents('./libs/scriptFooter.js');
