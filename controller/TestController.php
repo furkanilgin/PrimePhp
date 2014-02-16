@@ -15,7 +15,7 @@ class TestController{
 	}
 	
 	public function basicChangeEvent(){
-	
+		$this->test->txt_Inputtext->text = "basic";
 		//echo "basicChangeEvent works";
 	}
 	
@@ -25,7 +25,7 @@ class TestController{
 	}
 	
 	public function save(){
-	
+		$this->test->txt_Inputtext->text = "Saved";
 		//echo $this->test->txt_Inputtext->text;
 		//echo "Saved";
 	}

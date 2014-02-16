@@ -1093,7 +1093,7 @@ $(function() {
                                     column.append(content);
                             }
                             else {
-                                column.text(rowData[this.options.columns[j].field]);
+                                column.html(rowData[this.options.columns[j].field]);
                             }                            
                         }
                     }

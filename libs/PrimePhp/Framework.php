@@ -81,11 +81,13 @@ class Framework{
 	
 	public function setFromComponentArrayToModel($componentArray, $controller){
 	
-		foreach($componentArray as $component){
-			$tmp_val = str_replace("#{", "", $component->property);
-			$property = str_replace("}", "", $tmp_val);
-			$assignmentStatement = '$controller->'.$property.' = $component;';
-			eval($assignmentStatement);
+		if(!empty($componentArray)){
+			foreach($componentArray as $component){
+				$tmp_val = str_replace("#{", "", $component->property);
+				$property = str_replace("}", "", $tmp_val);
+				$assignmentStatement = '$controller->'.$property.' = $component;';
+				eval($assignmentStatement);
+			}
 		}
 
 		return $controller;
@@ -97,11 +99,13 @@ class Framework{
 	
 	public function setFromModelToComponentArray($componentArray, $controller){
 	
-		foreach($componentArray as $component){
-			$tmp_val = str_replace("#{", "", $component->property);
-			$property = str_replace("}", "", $tmp_val);
-			$assignmentStatement = '$component = $controller->'.$property.';';
-			eval($assignmentStatement);
+		if(!empty($componentArray)){
+			foreach($componentArray as $component){
+				$tmp_val = str_replace("#{", "", $component->property);
+				$property = str_replace("}", "", $tmp_val);
+				$assignmentStatement = '$component = $controller->'.$property.';';
+				eval($assignmentStatement);
+			}
 		}
 		
 		return $componentArray;
@@ -120,8 +124,10 @@ class Framework{
 		
 		/** Convert to html */
 		$html = '';
-		foreach($componentArray as $component){ 
-			$html .= $component->getHtml();
+		if(!empty($componentArray)){
+			foreach($componentArray as $component){ 
+				$html .= $component->getHtml();
+			}
 		}
 
 		return $html;
@@ -132,8 +138,10 @@ class Framework{
 		$jsHeader = file_get_contents('./js/scriptHeader.js');
 		$jsFooter = file_get_contents('./js/scriptFooter.js');
 		
-		foreach($componentArray as $component){
-			$jsContent .= $component->getJS();
+		if(!empty($componentArray)){
+			foreach($componentArray as $component){
+				$jsContent .= $component->getJS();
+			}
 		}
 		
 		return $jsHeader.$jsContent.$jsFooter;
